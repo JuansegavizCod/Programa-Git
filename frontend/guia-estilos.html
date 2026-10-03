@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guía de estilos | Fútbol Predicciones</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar" id="topbar"></div>
+    <main class="content" id="contenido">
+      <noscript><div class="alert-error">Esta aplicación necesita JavaScript habilitado.</div></noscript>
+
+      <div class="card">
+        <h2 style="margin-bottom:14px;">Paleta de colores</h2>
+        <div class="swatches">
+          <div class="swatch"><div class="color" style="background:#0B6E4F"></div><div class="info"><b>Verde césped</b>#0B6E4F<br>Primario, botones</div></div>
+          <div class="swatch"><div class="color" style="background:#08452F"></div><div class="info"><b>Verde oscuro</b>#08452F<br>Encabezados, hover</div></div>
+          <div class="swatch"><div class="color" style="background:#E6F4EE"></div><div class="info"><b>Verde suave</b>#E6F4EE<br>Fondos de apoyo</div></div>
+          <div class="swatch"><div class="color" style="background:#F2B705"></div><div class="info"><b>Dorado</b>#F2B705<br>Acento, resaltados</div></div>
+          <div class="swatch"><div class="color" style="background:#0F1F19"></div><div class="info"><b>Menú lateral</b>#0F1F19<br>Navegación</div></div>
+          <div class="swatch"><div class="color" style="background:#5F6F67"></div><div class="info"><b>Gris texto</b>#5F6F67<br>Texto secundario</div></div>
+          <div class="swatch"><div class="color" style="background:#F4F7F5"></div><div class="info"><b>Fondo</b>#F4F7F5<br>Fondo de página</div></div>
+          <div class="swatch"><div class="color" style="background:#C0392B"></div><div class="info"><b>Error</b>#C0392B<br>Mensajes de error</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2 style="margin-bottom:14px;">Tipografía y componentes</h2>
+        <h1>Título principal (26 px)</h1>
+        <h2 style="margin-top:8px;">Subtítulo de sección (19 px)</h2>
+        <h3 style="margin-top:8px;">Título de tarjeta (16 px)</h3>
+        <p style="margin-top:8px;">Texto de párrafo (15 px). Fuente: Segoe UI / Roboto / Arial.</p>
+        <div style="margin-top:14px;">
+          <a class="btn btn-primary" href="#">Primario</a>
+          <a class="btn btn-accent" href="#" style="margin-left:8px;">Acento</a>
+          <a class="btn btn-outline" href="#" style="margin-left:8px;">Secundario</a>
+        </div>
+        <div style="margin-top:14px;"><span class="badge badge-green">Programado</span> <span class="badge badge-gold">En análisis</span> <span class="badge badge-gray">Finalizado</span></div>
+      </div>
+      <div class="card">
+        <h2 style="margin-bottom:14px;">Criterios de usabilidad aplicados</h2>
+        <ul style="padding-left:20px;">
+          <li>Menú lateral consistente en todas las pantallas, con la sección activa resaltada.</li>
+          <li>Búsqueda, filtros y ordenamiento con respuesta inmediata (sin recargar la página).</li>
+          <li>Probabilidades representadas con barras de color: verde local, dorado empate, gris visitante.</li>
+          <li>Formularios con validación y mensajes de error claros; estados vacíos con orientación.</li>
+          <li>Accesibilidad: enlace "Saltar al contenido", foco visible, etiquetas en los campos y roles ARIA.</li>
+          <li>Diseño adaptable: el menú lateral pasa a botón desplegable en móvil y las tablas se desplazan.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 style="margin-bottom:14px;">Estructura del front-end</h2>
+        <ul style="padding-left:20px;">
+          <li><b>HTML:</b> una página por pantalla con estructura semántica (main, nav, aside, table, form).</li>
+          <li><b>CSS:</b> una hoja de estilos única con la paleta, los componentes y las reglas responsive.</li>
+          <li><b>JS:</b> data.js (datos), poisson.js (modelo), ui.js (menú y utilidades) y un script por pantalla.</li>
+        </ul>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="js/data.js"></script>
+<script src="js/poisson.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/guia.js"></script>
+</body>
+</html>

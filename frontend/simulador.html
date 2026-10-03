@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Simulador de predicción | Fútbol Predicciones</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar" id="topbar"></div>
+    <main class="content" id="contenido">
+      <noscript><div class="alert-error">Esta aplicación necesita JavaScript habilitado.</div></noscript>
+
+      <div class="card">
+        <h2 style="margin-bottom:14px;">Elige el cruce</h2>
+        <div class="form-row">
+          <div class="field"><label for="sel-local">Equipo local</label><select id="sel-local"></select></div>
+          <div class="field"><label for="sel-visitante">Equipo visitante</label><select id="sel-visitante"></select></div>
+        </div>
+        <button class="btn btn-primary" id="btn-calcular">Calcular predicción</button>
+      </div>
+      <div id="resultado" aria-live="polite"></div>
+      <div class="note"><b>Nota:</b> El modelo usa la fuerza de ataque y defensa de cada equipo frente al promedio de goles, con una ligera ventaja de local. Es una estimación con fines académicos.</div>
+    </main>
+  </div>
+</div>
+<script src="js/data.js"></script>
+<script src="js/poisson.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/simulador.js"></script>
+</body>
+</html>

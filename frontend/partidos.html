@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Partidos | Fútbol Predicciones</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar" id="topbar"></div>
+    <main class="content" id="contenido">
+      <noscript><div class="alert-error">Esta aplicación necesita JavaScript habilitado.</div></noscript>
+
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="Filtrar por liga">
+          <button class="chip active" data-liga="todas">Todas las ligas</button>
+          <button class="chip" data-liga="champions">Champions League</button>
+          <button class="chip" data-liga="premier">Premier League</button>
+        </div>
+        <input class="input-inline tool" id="filtro-texto" type="search" placeholder="Buscar equipo..." aria-label="Buscar equipo">
+        <select class="select-inline tool" id="filtro-orden" aria-label="Ordenar partidos">
+          <option value="fecha">Ordenar por fecha</option>
+          <option value="prob">Mayor prob. de victoria local</option>
+        </select>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>Calendario y predicciones</h2><span class="badge badge-green" id="contador">-</span></div>
+        <div id="lista-partidos"></div>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="js/data.js"></script>
+<script src="js/poisson.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/partidos.js"></script>
+</body>
+</html>

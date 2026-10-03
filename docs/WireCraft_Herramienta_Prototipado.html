@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>WireCraft — Herramienta de prototipado</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background:#1e1f26; height:100vh; overflow:hidden; }
+.app { display:flex; flex-direction:column; height:100vh; }
+.topbar { height:52px; background:#24252e; display:flex; align-items:center; padding:0 16px; color:#e8e8ef; border-bottom:1px solid #34353f; }
+.logo { display:flex; align-items:center; font-weight:700; font-size:16px; color:#fff; margin-right:28px; }
+.logo .dot { width:20px; height:20px; border-radius:6px; background:linear-gradient(135deg,#7C5CFF,#3DDAD7); margin-right:10px; }
+.menu { display:flex; font-size:13px; color:#b6b6c3; }
+.menu span { margin-right:18px; }
+.spacer { flex:1; }
+.hint { font-size:12px; color:#8f8fa3; margin-right:16px; }
+.presentbtn { background:#7C5CFF; color:#fff; font-size:13px; font-weight:600; padding:7px 16px; border-radius:6px; border:none; cursor:pointer; }
+.body { flex:1; display:flex; min-height:0; }
+.tools { width:190px; background:#24252e; border-right:1px solid #34353f; padding:16px 14px; color:#cfcfe0; }
+.tools h4 { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:#7d7d94; margin-bottom:10px; }
+.item { display:flex; align-items:center; padding:9px 8px; border-radius:6px; font-size:13px; margin-bottom:2px; cursor:pointer; user-select:none; }
+.item .ic { width:18px; text-align:center; margin-right:10px; }
+.item:hover { background:#2c2d38; }
+.item.active { background:#7C5CFF; color:#fff; }
+.canvas-wrap { flex:1; background:#16171d; position:relative; overflow:auto; display:flex; align-items:flex-start; justify-content:center; padding:40px 0;
+  background-image: radial-gradient(#2a2b34 1px, transparent 1px); background-size:18px 18px; }
+.frame-outer { position:relative; }
+.frame-label { position:absolute; top:-24px; left:0; font-size:12px; color:#b6b6c3; }
+#frame { position:relative; width:360px; height:640px; background:#fff; border-radius:14px; box-shadow:0 0 0 1px #3a3b46, 0 20px 60px rgba(0,0,0,.45); overflow:hidden; cursor:crosshair; }
+.el { position:absolute; cursor:move; }
+.el.selected { outline:2px solid #7C5CFF; outline-offset:2px; }
+.right { width:260px; background:#24252e; border-left:1px solid #34353f; color:#cfcfe0; display:flex; flex-direction:column; overflow-y:auto; }
+.panel-section { border-bottom:1px solid #34353f; padding:14px 16px; }
+.panel-title { font-size:11px; text-transform:uppercase; letter-spacing:.07em; color:#7d7d94; margin-bottom:10px; }
+.prop-row { display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:8px; }
+.prop-row .k { color:#8f8fa3; margin-right:8px; }
+.prop-row input[type=text], .prop-row input[type=number] { background:#1b1c23; border:1px solid #3a3b46; border-radius:4px; padding:4px 8px; font-size:12px; color:#e8e8ef; width:110px; }
+.prop-row input[type=color] { width:36px; height:24px; border:none; background:none; padding:0; }
+.empty-msg { font-size:12px; color:#6f6f85; }
+.layer { display:flex; align-items:center; font-size:12px; padding:7px 6px; border-radius:5px; cursor:pointer; }
+.layer .ic { width:14px; text-align:center; color:#8f8fa3; margin-right:8px; }
+.layer:hover { background:#2c2d38; }
+.layer.sel { background:#332f52; color:#fff; }
+.delbtn { margin-top:8px; background:#3a2130; color:#ff8fa3; border:1px solid #5a2c3c; font-size:12px; padding:6px 10px; border-radius:5px; cursor:pointer; width:100%; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="logo"><div class="dot"></div>WireCraft</div>
+    <div class="menu"><span>Archivo</span><span>Editar</span><span>Ver</span><span>Objeto</span><span>Componentes</span></div>
+    <div class="spacer"></div>
+    <div class="hint" id="hint">Elige una herramienta y haz clic dentro del lienzo para agregar el elemento</div>
+    <button class="presentbtn" onclick="alert('Vista previa: así se vería el prototipo en modo presentación.')">Presentar</button>
+  </div>
+  <div class="body">
+    <div class="tools" id="toolsPanel">
+      <h4>Herramientas</h4>
+      <div class="item active" data-tool="select"><span class="ic">↖</span>Seleccionar</div>
+      <div class="item" data-tool="rect"><span class="ic">▭</span>Rectángulo</div>
+      <div class="item" data-tool="circle"><span class="ic">○</span>Elipse / Avatar</div>
+      <div class="item" data-tool="text"><span class="ic">T</span>Texto</div>
+      <div class="item" data-tool="button"><span class="ic">▬</span>Botón</div>
+      <div class="item" data-tool="input"><span class="ic">⌗</span>Campo de entrada</div>
+      <div class="item" data-tool="image"><span class="ic">▣</span>Imagen</div>
+    </div>
+    <div class="canvas-wrap">
+      <div class="frame-outer">
+        <div class="frame-label">Pantalla — Mobile (360×640)</div>
+        <div id="frame"></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="panel-section" id="propsSection">
+        <div class="panel-title">Propiedades</div>
+        <div class="empty-msg">Ningún elemento seleccionado</div>
+      </div>
+      <div class="panel-section" style="flex:1;">
+        <div class="panel-title">Capas</div>
+        <div id="layersList" class="empty-msg">Sin capas todavía</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentTool = 'select';
+let elements = [];
+let idSeq = 1;
+let selectedId = null;
+
+const frame = document.getElementById('frame');
+const layersList = document.getElementById('layersList');
+const propsSection = document.getElementById('propsSection');
+const hint = document.getElementById('hint');
+
+const DEFAULTS = {
+  rect:   { w:120, h:80,  color:'#EEF0F6', label:'Rectángulo' },
+  circle: { w:60,  h:60,  color:'#E4E1FF', label:'Elipse' },
+  text:   { w:160, h:24,  text:'Texto', color:'#1A1A1A', label:'Texto' },
+  button: { w:160, h:44,  text:'Botón', color:'#7C5CFF', label:'Botón' },
+  input:  { w:200, h:44,  text:'Campo de texto', label:'Campo' },
+  image:  { w:120, h:90,  label:'Imagen' },
+};
+
+document.querySelectorAll('.item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    currentTool = item.dataset.tool;
+    hint.textContent = currentTool === 'select'
+      ? 'Haz clic sobre un elemento del lienzo para seleccionarlo'
+      : 'Haz clic dentro del lienzo para agregar: ' + DEFAULTS[currentTool].label;
+  });
+});
+
+frame.addEventListener('click', (e) => {
+  if (e.target !== frame) return; // clicks on elements are handled separately
+  if (currentTool === 'select') { select(null); return; }
+  const rect = frame.getBoundingClientRect();
+  const x = Math.max(0, Math.min(e.clientX - rect.left - 20, 360 - 40));
+  const y = Math.max(0, Math.min(e.clientY - rect.top - 15, 640 - 40));
+  addElement(currentTool, x, y);
+});
+
+function addElement(type, x, y) {
+  const d = DEFAULTS[type];
+  const el = { id: idSeq++, type, x, y, w:d.w, h:d.h, text:d.text || '', color:d.color || '#EEF0F6', label:d.label };
+  elements.push(el);
+  render();
+  select(el.id);
+}
+
+function render() {
+  frame.innerHTML = '';
+  elements.forEach(el => {
+    const div = document.createElement('div');
+    div.className = 'el' + (el.id === selectedId ? ' selected' : '');
+    div.style.left = el.x + 'px';
+    div.style.top = el.y + 'px';
+    div.style.width = el.w + 'px';
+    div.style.height = el.h + 'px';
+    div.style.fontFamily = 'Segoe UI, Arial, sans-serif';
+
+    if (el.type === 'text') {
+      div.style.color = el.color; div.style.fontWeight = '600'; div.style.fontSize = '15px';
+      div.textContent = el.text;
+    } else if (el.type === 'input') {
+      div.style.background = '#F5F6FA'; div.style.border = '1px solid #D9DBE3'; div.style.borderRadius = '8px';
+      div.style.display = 'flex'; div.style.alignItems = 'center'; div.style.padding = '0 12px';
+      div.style.fontSize = '13px'; div.style.color = '#9497A6';
+      div.textContent = el.text;
+    } else if (el.type === 'button') {
+      div.style.background = el.color; div.style.borderRadius = '8px'; div.style.display = 'flex';
+      div.style.alignItems = 'center'; div.style.justifyContent = 'center'; div.style.color = '#fff';
+      div.style.fontWeight = '600'; div.style.fontSize = '14px';
+      div.textContent = el.text;
+    } else if (el.type === 'circle') {
+      div.style.background = el.color; div.style.borderRadius = '50%';
+    } else if (el.type === 'rect') {
+      div.style.background = el.color; div.style.borderRadius = '6px';
+    } else if (el.type === 'image') {
+      div.style.background = 'repeating-linear-gradient(45deg,#E9EAF1,#E9EAF1 8px,#DDDFE8 8px,#DDDFE8 16px)';
+      div.style.borderRadius = '8px'; div.style.display = 'flex'; div.style.alignItems = 'center';
+      div.style.justifyContent = 'center'; div.style.color = '#9497A6'; div.style.fontSize = '11px';
+      div.textContent = 'Imagen';
+    }
+
+    div.addEventListener('mousedown', (ev) => {
+      ev.stopPropagation();
+      if (currentTool !== 'select') return;
+      select(el.id);
+      const startX = ev.clientX, startY = ev.clientY;
+      const origX = el.x, origY = el.y;
+      function onMove(mv) {
+        el.x = Math.max(0, origX + (mv.clientX - startX));
+        el.y = Math.max(0, origY + (mv.clientY - startY));
+        render();
+      }
+      function onUp() { document.removeEventListener('mousemove', onMove); document.removeEventListener('mouseup', onUp); }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+
+    frame.appendChild(div);
+  });
+  renderLayers();
+  if (selectedId !== null) renderProps();
+}
+
+function renderLayers() {
+  if (elements.length === 0) { layersList.className = 'empty-msg'; layersList.textContent = 'Sin capas todavía'; return; }
+  layersList.className = '';
+  layersList.innerHTML = '';
+  [...elements].reverse().forEach(el => {
+    const row = document.createElement('div');
+    row.className = 'layer' + (el.id === selectedId ? ' sel' : '');
+    row.innerHTML = '<span class="ic">' + iconFor(el.type) + '</span>' + el.label + ' ' + el.id;
+    row.addEventListener('click', () => select(el.id));
+    layersList.appendChild(row);
+  });
+}
+
+function iconFor(type) {
+  return { rect:'▭', circle:'○', text:'T', button:'▬', input:'⌗', image:'▣' }[type] || '▭';
+}
+
+function select(id) {
+  selectedId = id;
+  render();
+  renderProps();
+}
+
+function renderProps() {
+  const el = elements.find(e => e.id === selectedId);
+  if (!el) {
+    propsSection.innerHTML = '<div class="panel-title">Propiedades</div><div class="empty-msg">Ningún elemento seleccionado</div>';
+    return;
+  }
+  let rows = '';
+  if ('text' in el && el.type !== 'rect' && el.type !== 'circle' && el.type !== 'image') {
+    rows += row('Texto', `<input type="text" value="${escapeHtml(el.text)}" oninput="updateEl(${el.id},'text',this.value)">`);
+  }
+  if (el.type !== 'text') {
+    rows += row('Color', `<input type="color" value="${el.color}" oninput="updateEl(${el.id},'color',this.value)">`);
+  } else {
+    rows += row('Color', `<input type="color" value="${el.color}" oninput="updateEl(${el.id},'color',this.value)">`);
+  }
+  rows += row('Ancho', `<input type="number" value="${el.w}" oninput="updateEl(${el.id},'w',parseInt(this.value)||0)">`);
+  rows += row('Alto', `<input type="number" value="${el.h}" oninput="updateEl(${el.id},'h',parseInt(this.value)||0)">`);
+  propsSection.innerHTML = `<div class="panel-title">Propiedades — ${el.label} ${el.id}</div>${rows}<button class="delbtn" onclick="deleteSelected()">Eliminar elemento</button>`;
+}
+
+function row(label, inputHtml) {
+  return `<div class="prop-row"><span class="k">${label}</span>${inputHtml}</div>`;
+}
+
+function updateEl(id, key, value) {
+  const el = elements.find(e => e.id === id);
+  if (!el) return;
+  el[key] = value;
+  render();
+}
+
+function deleteSelected() {
+  elements = elements.filter(e => e.id !== selectedId);
+  selectedId = null;
+  render();
+}
+
+function escapeHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equipos y ligas | Fútbol Predicciones</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar" id="topbar"></div>
+    <main class="content" id="contenido">
+      <noscript><div class="alert-error">Esta aplicación necesita JavaScript habilitado.</div></noscript>
+
+      <div class="filters" role="group" aria-label="Filtrar por liga">
+        <button class="chip active" data-liga="todas">Todas las ligas</button>
+        <button class="chip" data-liga="champions">Champions League</button>
+        <button class="chip" data-liga="premier">Premier League</button>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>Estadísticas por equipo — Temporada 2025-2026</h2><span class="badge badge-gold">Clic en un encabezado para ordenar</span></div>
+        <table class="data">
+          <thead><tr>
+            <th class="sortable" data-col="nombre" aria-sort="none">Equipo<span class="arrow"></span></th>
+            <th class="sortable" data-col="liga" aria-sort="none">Liga<span class="arrow"></span></th>
+            <th class="sortable num" data-col="pj" aria-sort="none">PJ<span class="arrow"></span></th>
+            <th class="sortable num" data-col="gf" aria-sort="none">GF<span class="arrow"></span></th>
+            <th class="sortable num" data-col="gc" aria-sort="none">GC<span class="arrow"></span></th>
+            <th class="sortable num" data-col="gfp" aria-sort="none">Prom. GF<span class="arrow"></span></th>
+            <th class="sortable num" data-col="gcp" aria-sort="none">Prom. GC<span class="arrow"></span></th>
+          </tr></thead>
+          <tbody id="tabla-equipos"></tbody>
+        </table>
+        <p class="muted" style="margin-top:12px;">PJ: partidos jugados · GF: goles a favor · GC: goles en contra</p>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="js/data.js"></script>
+<script src="js/poisson.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/equipos.js"></script>
+</body>
+</html>

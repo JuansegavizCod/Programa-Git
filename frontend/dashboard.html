@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inicio | Fútbol Predicciones</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main">
+    <div class="topbar" id="topbar"></div>
+    <main class="content" id="contenido">
+      <noscript><div class="alert-error">Esta aplicación necesita JavaScript habilitado.</div></noscript>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="label">Partidos próximos</div><div class="value" id="st-partidos">-</div><div class="sub">En el calendario</div></div>
+        <div class="stat-card"><div class="label">Predicciones generadas</div><div class="value" id="st-pred">-</div><div class="sub">Modelo Poisson v1.0</div></div>
+        <div class="stat-card"><div class="label">Ligas activas</div><div class="value" id="st-ligas">-</div><div class="sub">Champions y Premier</div></div>
+        <div class="stat-card"><div class="label">Equipos analizados</div><div class="value" id="st-equipos">-</div><div class="sub">Temporada 2025-2026</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>Próximos partidos y predicciones</h2><a class="btn btn-primary" href="partidos.html">Ver todos</a></div>
+        <div id="lista-partidos"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><h2>Equipos más goleadores</h2><span class="badge badge-green">Promedio de goles por partido</span></div>
+        <div id="ranking"></div>
+      </div>
+      <div class="note"><b>Nota:</b> Las predicciones son estimaciones estadísticas con fines de análisis y aprendizaje; no garantizan resultados.</div>
+    </main>
+  </div>
+</div>
+<script src="js/data.js"></script>
+<script src="js/poisson.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

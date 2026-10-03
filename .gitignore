@@ -1,0 +1,13 @@
+# Java / Maven
+backend/ModuloEquipos/target/
+backend/ModuloEquipos/bin/
+*.class
+
+# Datos sensibles (nunca subir contraseñas reales)
+backend/ModuloEquipos/src/main/resources/config.properties
+
+# Sistema
+.DS_Store
+.idea/
+*.iml
+.vscode/
