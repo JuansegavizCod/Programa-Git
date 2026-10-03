@@ -1,0 +1,12 @@
+Evidencia: GA7-220501096-AA2-EV01
+Aprendiz: Juan Sebastian Garibello Vizcaino
+Ficha: 3186698
+
+Enlace del repositorio en GitHub:
+https://github.com/JuansegavizCod/Programa-Git
+
+Rama principal: master
+Carpeta del modulo dentro del repositorio: backend/ModuloEquipos
+
+Commit de entrega:
+feat: estructura inicial del proyecto (bd, backend, frontend, docs)
